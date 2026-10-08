@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.deps/
+node_modules/
+.venv/
+*.inspect.ndjson

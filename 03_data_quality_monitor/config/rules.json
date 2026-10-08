@@ -1,0 +1,40 @@
+{
+  "project_name": "通用数据质量监控工具",
+  "as_of_date": "2026-01-15",
+  "sources": {
+    "customers": {"type": "csv", "path": "data/raw/customers.csv", "primary_key": "customer_id", "required_columns": ["customer_id", "name", "email", "region", "segment", "join_date", "status"]},
+    "products": {"type": "csv", "path": "data/raw/products.csv", "primary_key": "product_id", "required_columns": ["product_id", "product_name", "category", "unit_cost", "list_price", "status"]},
+    "orders": {"type": "csv", "path": "data/raw/orders.csv", "primary_key": "order_id", "required_columns": ["order_id", "order_date", "customer_id", "product_id", "quantity", "unit_price", "discount_rate", "payment_status", "region"]}
+  },
+  "checks": [
+    {"id": "customers_required_columns", "type": "required_columns", "table": "customers", "columns": ["customer_id", "name", "email", "region", "segment", "join_date", "status"], "severity": "high"},
+    {"id": "customers_pk_not_null", "type": "not_null", "table": "customers", "column": "customer_id", "severity": "high"},
+    {"id": "customers_pk_unique", "type": "unique", "table": "customers", "columns": ["customer_id"], "severity": "high"},
+    {"id": "customers_email_format", "type": "regex", "table": "customers", "column": "email", "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", "allow_null": false, "severity": "medium"},
+    {"id": "customers_status_allowed", "type": "allowed_values", "table": "customers", "column": "status", "values": ["active", "inactive"], "severity": "medium"},
+    {"id": "customers_join_not_future", "type": "date_not_after", "table": "customers", "column": "join_date", "as_of_date": "2026-01-15", "severity": "high"},
+    {"id": "customers_row_count", "type": "row_count", "table": "customers", "min": 300, "max": 1000, "severity": "high"},
+    {"id": "products_required_columns", "type": "required_columns", "table": "products", "columns": ["product_id", "product_name", "category", "unit_cost", "list_price", "status"], "severity": "high"},
+    {"id": "products_pk_not_null", "type": "not_null", "table": "products", "column": "product_id", "severity": "high"},
+    {"id": "products_pk_unique", "type": "unique", "table": "products", "columns": ["product_id"], "severity": "high"},
+    {"id": "products_category_not_null", "type": "not_null", "table": "products", "column": "category", "severity": "high"},
+    {"id": "products_cost_range", "type": "range", "table": "products", "column": "unit_cost", "min": 0, "severity": "high"},
+    {"id": "products_price_range", "type": "range", "table": "products", "column": "list_price", "min": 0.01, "severity": "high"},
+    {"id": "products_status_allowed", "type": "allowed_values", "table": "products", "column": "status", "values": ["active", "inactive"], "severity": "medium"},
+    {"id": "orders_required_columns", "type": "required_columns", "table": "orders", "columns": ["order_id", "order_date", "customer_id", "product_id", "quantity", "unit_price", "discount_rate", "payment_status", "region"], "severity": "high"},
+    {"id": "orders_pk_not_null", "type": "not_null", "table": "orders", "column": "order_id", "severity": "high"},
+    {"id": "orders_pk_unique", "type": "unique", "table": "orders", "columns": ["order_id"], "severity": "high"},
+    {"id": "orders_customer_fk", "type": "referential_integrity", "table": "orders", "column": "customer_id", "parent_table": "customers", "parent_column": "customer_id", "severity": "high"},
+    {"id": "orders_product_fk", "type": "referential_integrity", "table": "orders", "column": "product_id", "parent_table": "products", "parent_column": "product_id", "severity": "high"},
+    {"id": "orders_region_consistency", "type": "cross_table_consistency", "table": "orders", "key_column": "customer_id", "value_column": "region", "parent_table": "customers", "parent_key_column": "customer_id", "parent_value_column": "region", "severity": "high"},
+    {"id": "orders_quantity_range", "type": "range", "table": "orders", "column": "quantity", "min": 1, "severity": "high"},
+    {"id": "orders_price_range", "type": "range", "table": "orders", "column": "unit_price", "min": 0.01, "severity": "high"},
+    {"id": "orders_discount_range", "type": "range", "table": "orders", "column": "discount_rate", "min": 0, "max": 0.5, "severity": "high"},
+    {"id": "orders_payment_allowed", "type": "allowed_values", "table": "orders", "column": "payment_status", "values": ["paid", "refunded", "cancelled"], "severity": "medium"},
+    {"id": "orders_date_not_future", "type": "date_not_after", "table": "orders", "column": "order_date", "as_of_date": "2026-01-15", "severity": "high"},
+    {"id": "orders_freshness", "type": "freshness", "table": "orders", "column": "order_date", "as_of_date": "2026-01-15", "max_age_days": 45, "severity": "medium"},
+    {"id": "orders_null_rate", "type": "null_rate", "table": "orders", "columns": ["order_id", "order_date", "customer_id", "product_id"], "max_rate": 0.0, "severity": "high"},
+    {"id": "orders_row_count", "type": "row_count", "table": "orders", "min": 5000, "max": 20000, "severity": "high"}
+  ],
+  "thresholds": {"fail_on_high": true, "warn_on_medium": true}
+}

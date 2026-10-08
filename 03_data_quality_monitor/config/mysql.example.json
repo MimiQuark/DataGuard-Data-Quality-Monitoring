@@ -1,0 +1,25 @@
+{
+  "project_name": "MySQL 数据质量监控示例",
+  "as_of_date": "2026-01-15",
+  "sources": {
+    "orders": {
+      "type": "mysql",
+      "host": "127.0.0.1",
+      "port": 3306,
+      "user": "readonly_user",
+      "password": "change_me",
+      "database": "analytics",
+      "charset": "utf8mb4",
+      "query": "SELECT order_id, order_date, customer_id, product_id, quantity, unit_price, discount_rate, payment_status, region FROM fact_orders",
+      "primary_key": "order_id",
+      "required_columns": ["order_id", "order_date", "customer_id", "product_id", "quantity", "unit_price", "discount_rate", "payment_status", "region"]
+    }
+  },
+  "checks": [
+    {"id": "orders_pk_unique", "type": "unique", "table": "orders", "columns": ["order_id"], "severity": "high"},
+    {"id": "orders_quantity_range", "type": "range", "table": "orders", "column": "quantity", "min": 1, "severity": "high"},
+    {"id": "orders_discount_range", "type": "range", "table": "orders", "column": "discount_rate", "min": 0, "max": 0.5, "severity": "high"},
+    {"id": "orders_date_not_future", "type": "date_not_after", "table": "orders", "column": "order_date", "as_of_date": "2026-01-15", "severity": "high"}
+  ],
+  "thresholds": {"fail_on_high": true, "warn_on_medium": true}
+}

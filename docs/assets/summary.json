@@ -1,0 +1,1186 @@
+{
+  "summary": {
+    "run_id": "d2fd368b75bc4f56a0a0cb87938e215d",
+    "project_name": "通用数据质量监控工具",
+    "started_at": "2026-10-08T17:04:31",
+    "finished_at": "2026-10-08T17:04:31",
+    "status": "failed",
+    "total_checks": 28,
+    "passed_checks": 8,
+    "failed_checks": 20,
+    "issue_count": 35,
+    "high_count": 31,
+    "medium_count": 4,
+    "low_count": 0,
+    "duration_seconds": 0.053
+  },
+  "checks": [
+    {
+      "check_id": "customers_required_columns",
+      "rule_type": "required_columns",
+      "table": "customers",
+      "severity": "high",
+      "passed": true,
+      "checked_rows": 401,
+      "metric": 0,
+      "message": "字段完整性检查",
+      "duration_ms": 0.0,
+      "issues": []
+    },
+    {
+      "check_id": "customers_pk_not_null",
+      "rule_type": "not_null",
+      "table": "customers",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 401,
+      "metric": 1,
+      "message": "空值检查",
+      "duration_ms": 0.0,
+      "issues": [
+        {
+          "check_id": "customers_pk_not_null",
+          "rule_type": "not_null",
+          "table": "customers",
+          "row_index": 5,
+          "column": "customer_id",
+          "value": "",
+          "severity": "high",
+          "message": "customer_id 不能为空",
+          "issue_key": "8d53deed4c75725a26cd5c30a12b9553c7ecb670"
+        }
+      ]
+    },
+    {
+      "check_id": "customers_pk_unique",
+      "rule_type": "unique",
+      "table": "customers",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 401,
+      "metric": 1,
+      "message": "唯一性检查",
+      "duration_ms": 0.0,
+      "issues": [
+        {
+          "check_id": "customers_pk_unique",
+          "rule_type": "unique",
+          "table": "customers",
+          "row_index": 7,
+          "column": "customer_id",
+          "value": "C000006",
+          "severity": "high",
+          "message": "唯一键重复：customer_id",
+          "issue_key": "4bc2080c764c3f2d0716af5b89577e3bfa1f02f5"
+        },
+        {
+          "check_id": "customers_pk_unique",
+          "rule_type": "unique",
+          "table": "customers",
+          "row_index": 402,
+          "column": "customer_id",
+          "value": "C000006",
+          "severity": "high",
+          "message": "唯一键重复：customer_id",
+          "issue_key": "1bb3c5825c5ea151dd0b2c1741af12dd2aaa796e"
+        }
+      ]
+    },
+    {
+      "check_id": "customers_email_format",
+      "rule_type": "regex",
+      "table": "customers",
+      "severity": "medium",
+      "passed": false,
+      "checked_rows": 401,
+      "metric": 2,
+      "message": "格式检查",
+      "duration_ms": 0.0,
+      "issues": [
+        {
+          "check_id": "customers_email_format",
+          "rule_type": "regex",
+          "table": "customers",
+          "row_index": 2,
+          "column": "email",
+          "value": "bad-email",
+          "severity": "medium",
+          "message": "email 格式不符合规则",
+          "issue_key": "6323349f34ce2fb002618821dd665f03350e96d9"
+        },
+        {
+          "check_id": "customers_email_format",
+          "rule_type": "regex",
+          "table": "customers",
+          "row_index": 3,
+          "column": "email",
+          "value": "",
+          "severity": "medium",
+          "message": "email 格式不符合规则",
+          "issue_key": "ed7fede295a397a8c8139b9f091d10659d010b84"
+        }
+      ]
+    },
+    {
+      "check_id": "customers_status_allowed",
+      "rule_type": "allowed_values",
+      "table": "customers",
+      "severity": "medium",
+      "passed": false,
+      "checked_rows": 401,
+      "metric": 1,
+      "message": "枚举值检查",
+      "duration_ms": 0.0,
+      "issues": [
+        {
+          "check_id": "customers_status_allowed",
+          "rule_type": "allowed_values",
+          "table": "customers",
+          "row_index": 4,
+          "column": "status",
+          "value": "unknown",
+          "severity": "medium",
+          "message": "status 取值不在允许范围内",
+          "issue_key": "fbe0fba208479670397b9cefc5e886a905abbed3"
+        }
+      ]
+    },
+    {
+      "check_id": "customers_join_not_future",
+      "rule_type": "date_not_after",
+      "table": "customers",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 401,
+      "metric": 1,
+      "message": "日期有效性检查",
+      "duration_ms": 0.0,
+      "issues": [
+        {
+          "check_id": "customers_join_not_future",
+          "rule_type": "date_not_after",
+          "table": "customers",
+          "row_index": 6,
+          "column": "join_date",
+          "value": "2026-12-31",
+          "severity": "high",
+          "message": "join_date 不是有效历史日期或晚于 2026-01-15",
+          "issue_key": "186de565e592b1c4ab80553c243ddf30e86c23bb"
+        }
+      ]
+    },
+    {
+      "check_id": "customers_row_count",
+      "rule_type": "row_count",
+      "table": "customers",
+      "severity": "high",
+      "passed": true,
+      "checked_rows": 401,
+      "metric": 401,
+      "message": "记录数检查",
+      "duration_ms": 0.0,
+      "issues": []
+    },
+    {
+      "check_id": "products_required_columns",
+      "rule_type": "required_columns",
+      "table": "products",
+      "severity": "high",
+      "passed": true,
+      "checked_rows": 101,
+      "metric": 0,
+      "message": "字段完整性检查",
+      "duration_ms": 0.0,
+      "issues": []
+    },
+    {
+      "check_id": "products_pk_not_null",
+      "rule_type": "not_null",
+      "table": "products",
+      "severity": "high",
+      "passed": true,
+      "checked_rows": 101,
+      "metric": 0,
+      "message": "空值检查",
+      "duration_ms": 0.0,
+      "issues": []
+    },
+    {
+      "check_id": "products_pk_unique",
+      "rule_type": "unique",
+      "table": "products",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 101,
+      "metric": 1,
+      "message": "唯一性检查",
+      "duration_ms": 17.3,
+      "issues": [
+        {
+          "check_id": "products_pk_unique",
+          "rule_type": "unique",
+          "table": "products",
+          "row_index": 5,
+          "column": "product_id",
+          "value": "P0004",
+          "severity": "high",
+          "message": "唯一键重复：product_id",
+          "issue_key": "93a06c97b394b01f09d2c6c11a63449602bb0893"
+        },
+        {
+          "check_id": "products_pk_unique",
+          "rule_type": "unique",
+          "table": "products",
+          "row_index": 102,
+          "column": "product_id",
+          "value": "P0004",
+          "severity": "high",
+          "message": "唯一键重复：product_id",
+          "issue_key": "bd623f9d2f16422a9697f1562a8b73fa7e1e52df"
+        }
+      ]
+    },
+    {
+      "check_id": "products_category_not_null",
+      "rule_type": "not_null",
+      "table": "products",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 101,
+      "metric": 1,
+      "message": "空值检查",
+      "duration_ms": 1.01,
+      "issues": [
+        {
+          "check_id": "products_category_not_null",
+          "rule_type": "not_null",
+          "table": "products",
+          "row_index": 3,
+          "column": "category",
+          "value": "",
+          "severity": "high",
+          "message": "category 不能为空",
+          "issue_key": "7802a8fa5058671fff64c40133445b93ed288200"
+        }
+      ]
+    },
+    {
+      "check_id": "products_cost_range",
+      "rule_type": "range",
+      "table": "products",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 101,
+      "metric": 1,
+      "message": "数值范围检查",
+      "duration_ms": 0.99,
+      "issues": [
+        {
+          "check_id": "products_cost_range",
+          "rule_type": "range",
+          "table": "products",
+          "row_index": 2,
+          "column": "unit_cost",
+          "value": "-10.00",
+          "severity": "high",
+          "message": "unit_cost 超出数值范围",
+          "issue_key": "e37ef9abb2d89d4b6b698be100843d8afc42e643"
+        }
+      ]
+    },
+    {
+      "check_id": "products_price_range",
+      "rule_type": "range",
+      "table": "products",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 101,
+      "metric": 1,
+      "message": "数值范围检查",
+      "duration_ms": 0.0,
+      "issues": [
+        {
+          "check_id": "products_price_range",
+          "rule_type": "range",
+          "table": "products",
+          "row_index": 4,
+          "column": "list_price",
+          "value": "0.00",
+          "severity": "high",
+          "message": "list_price 超出数值范围",
+          "issue_key": "602d33b5a27f2566243d8a1aab54527ce50ed54f"
+        }
+      ]
+    },
+    {
+      "check_id": "products_status_allowed",
+      "rule_type": "allowed_values",
+      "table": "products",
+      "severity": "medium",
+      "passed": true,
+      "checked_rows": 101,
+      "metric": 0,
+      "message": "枚举值检查",
+      "duration_ms": 1.01,
+      "issues": []
+    },
+    {
+      "check_id": "orders_required_columns",
+      "rule_type": "required_columns",
+      "table": "orders",
+      "severity": "high",
+      "passed": true,
+      "checked_rows": 6001,
+      "metric": 0,
+      "message": "字段完整性检查",
+      "duration_ms": 0.0,
+      "issues": []
+    },
+    {
+      "check_id": "orders_pk_not_null",
+      "rule_type": "not_null",
+      "table": "orders",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 6001,
+      "metric": 1,
+      "message": "空值检查",
+      "duration_ms": 2.0,
+      "issues": [
+        {
+          "check_id": "orders_pk_not_null",
+          "rule_type": "not_null",
+          "table": "orders",
+          "row_index": 11,
+          "column": "order_id",
+          "value": "",
+          "severity": "high",
+          "message": "order_id 不能为空",
+          "issue_key": "2387c382722a8c81c11b0982f30ab595a8dd57f6"
+        }
+      ]
+    },
+    {
+      "check_id": "orders_pk_unique",
+      "rule_type": "unique",
+      "table": "orders",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 6001,
+      "metric": 1,
+      "message": "唯一性检查",
+      "duration_ms": 1.99,
+      "issues": [
+        {
+          "check_id": "orders_pk_unique",
+          "rule_type": "unique",
+          "table": "orders",
+          "row_index": 10,
+          "column": "order_id",
+          "value": "O00000009",
+          "severity": "high",
+          "message": "唯一键重复：order_id",
+          "issue_key": "01d2cf94a62fd47c562132cdddaf4060c416020f"
+        },
+        {
+          "check_id": "orders_pk_unique",
+          "rule_type": "unique",
+          "table": "orders",
+          "row_index": 6002,
+          "column": "order_id",
+          "value": "O00000009",
+          "severity": "high",
+          "message": "唯一键重复：order_id",
+          "issue_key": "9d39b84c386b1557b5836fdabf27ef79e00adeda"
+        }
+      ]
+    },
+    {
+      "check_id": "orders_customer_fk",
+      "rule_type": "referential_integrity",
+      "table": "orders",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 6001,
+      "metric": 12,
+      "message": "主外键完整性检查",
+      "duration_ms": 2.09,
+      "issues": [
+        {
+          "check_id": "orders_customer_fk",
+          "rule_type": "referential_integrity",
+          "table": "orders",
+          "row_index": 7,
+          "column": "customer_id",
+          "value": "C999999",
+          "severity": "high",
+          "message": "customer_id 在父表中不存在",
+          "issue_key": "e4ebf9b3691088a1419f58b10593e19ba30cb4bc"
+        },
+        {
+          "check_id": "orders_customer_fk",
+          "rule_type": "referential_integrity",
+          "table": "orders",
+          "row_index": 448,
+          "column": "customer_id",
+          "value": "C000004",
+          "severity": "high",
+          "message": "customer_id 在父表中不存在",
+          "issue_key": "052a4020f2cc5dfa00171e8f681a4a272e689a11"
+        },
+        {
+          "check_id": "orders_customer_fk",
+          "rule_type": "referential_integrity",
+          "table": "orders",
+          "row_index": 1403,
+          "column": "customer_id",
+          "value": "C000004",
+          "severity": "high",
+          "message": "customer_id 在父表中不存在",
+          "issue_key": "e789fbd2010eaf6ffa51de0399cff869d5101669"
+        },
+        {
+          "check_id": "orders_customer_fk",
+          "rule_type": "referential_integrity",
+          "table": "orders",
+          "row_index": 2332,
+          "column": "customer_id",
+          "value": "C000004",
+          "severity": "high",
+          "message": "customer_id 在父表中不存在",
+          "issue_key": "08937e0b0b3deac2fa9585fb25012f24e5504dc8"
+        },
+        {
+          "check_id": "orders_customer_fk",
+          "rule_type": "referential_integrity",
+          "table": "orders",
+          "row_index": 2370,
+          "column": "customer_id",
+          "value": "C000004",
+          "severity": "high",
+          "message": "customer_id 在父表中不存在",
+          "issue_key": "b33f054c723298e41a7518b52d5a7e30a559beb3"
+        },
+        {
+          "check_id": "orders_customer_fk",
+          "rule_type": "referential_integrity",
+          "table": "orders",
+          "row_index": 3002,
+          "column": "customer_id",
+          "value": "C000004",
+          "severity": "high",
+          "message": "customer_id 在父表中不存在",
+          "issue_key": "37354d958aa2598095485215055b71babf8a5e3d"
+        },
+        {
+          "check_id": "orders_customer_fk",
+          "rule_type": "referential_integrity",
+          "table": "orders",
+          "row_index": 3370,
+          "column": "customer_id",
+          "value": "C000004",
+          "severity": "high",
+          "message": "customer_id 在父表中不存在",
+          "issue_key": "dfd6643a396b78c0cbbc185882366f33606fef3b"
+        },
+        {
+          "check_id": "orders_customer_fk",
+          "rule_type": "referential_integrity",
+          "table": "orders",
+          "row_index": 3392,
+          "column": "customer_id",
+          "value": "C000004",
+          "severity": "high",
+          "message": "customer_id 在父表中不存在",
+          "issue_key": "2adafc620b3f4011f83e2fab1e8812a0ff621742"
+        },
+        {
+          "check_id": "orders_customer_fk",
+          "rule_type": "referential_integrity",
+          "table": "orders",
+          "row_index": 3892,
+          "column": "customer_id",
+          "value": "C000004",
+          "severity": "high",
+          "message": "customer_id 在父表中不存在",
+          "issue_key": "d4b81010d2fe967b1f6a81aaafac52a8f26d7f94"
+        },
+        {
+          "check_id": "orders_customer_fk",
+          "rule_type": "referential_integrity",
+          "table": "orders",
+          "row_index": 4258,
+          "column": "customer_id",
+          "value": "C000004",
+          "severity": "high",
+          "message": "customer_id 在父表中不存在",
+          "issue_key": "546bb4bb97fcb5de81d3ac1fc046b0efbfde0ac5"
+        },
+        {
+          "check_id": "orders_customer_fk",
+          "rule_type": "referential_integrity",
+          "table": "orders",
+          "row_index": 5164,
+          "column": "customer_id",
+          "value": "C000004",
+          "severity": "high",
+          "message": "customer_id 在父表中不存在",
+          "issue_key": "e10fd021af16138706ca1ba3f8d70e3cf2a4f143"
+        },
+        {
+          "check_id": "orders_customer_fk",
+          "rule_type": "referential_integrity",
+          "table": "orders",
+          "row_index": 5416,
+          "column": "customer_id",
+          "value": "C000004",
+          "severity": "high",
+          "message": "customer_id 在父表中不存在",
+          "issue_key": "13d9d62f83dd4c3155846afd8e05470ff771e392"
+        }
+      ]
+    },
+    {
+      "check_id": "orders_product_fk",
+      "rule_type": "referential_integrity",
+      "table": "orders",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 6001,
+      "metric": 1,
+      "message": "主外键完整性检查",
+      "duration_ms": 0.0,
+      "issues": [
+        {
+          "check_id": "orders_product_fk",
+          "rule_type": "referential_integrity",
+          "table": "orders",
+          "row_index": 8,
+          "column": "product_id",
+          "value": "P9999",
+          "severity": "high",
+          "message": "product_id 在父表中不存在",
+          "issue_key": "4215827959326305abb66733c06f4d9639986b85"
+        }
+      ]
+    },
+    {
+      "check_id": "orders_region_consistency",
+      "rule_type": "cross_table_consistency",
+      "table": "orders",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 6001,
+      "metric": 1,
+      "message": "跨表一致性检查",
+      "duration_ms": 3.0,
+      "issues": [
+        {
+          "check_id": "orders_region_consistency",
+          "rule_type": "cross_table_consistency",
+          "table": "orders",
+          "row_index": 9,
+          "column": "region",
+          "value": "海外",
+          "severity": "high",
+          "message": "字段值与父表不一致",
+          "issue_key": "20bb16894fbd558fec1ff3f43e8007bd44896868"
+        }
+      ]
+    },
+    {
+      "check_id": "orders_quantity_range",
+      "rule_type": "range",
+      "table": "orders",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 6001,
+      "metric": 1,
+      "message": "数值范围检查",
+      "duration_ms": 3.23,
+      "issues": [
+        {
+          "check_id": "orders_quantity_range",
+          "rule_type": "range",
+          "table": "orders",
+          "row_index": 2,
+          "column": "quantity",
+          "value": "-2",
+          "severity": "high",
+          "message": "quantity 超出数值范围",
+          "issue_key": "347e35fea66b599f2fb8c5175e1c4776c11d79d1"
+        }
+      ]
+    },
+    {
+      "check_id": "orders_price_range",
+      "rule_type": "range",
+      "table": "orders",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 6001,
+      "metric": 1,
+      "message": "数值范围检查",
+      "duration_ms": 0.0,
+      "issues": [
+        {
+          "check_id": "orders_price_range",
+          "rule_type": "range",
+          "table": "orders",
+          "row_index": 3,
+          "column": "unit_price",
+          "value": "-99.00",
+          "severity": "high",
+          "message": "unit_price 超出数值范围",
+          "issue_key": "a833aae376536c8e01c4615db864aac439ede02e"
+        }
+      ]
+    },
+    {
+      "check_id": "orders_discount_range",
+      "rule_type": "range",
+      "table": "orders",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 6001,
+      "metric": 1,
+      "message": "数值范围检查",
+      "duration_ms": 7.19,
+      "issues": [
+        {
+          "check_id": "orders_discount_range",
+          "rule_type": "range",
+          "table": "orders",
+          "row_index": 4,
+          "column": "discount_rate",
+          "value": "0.80",
+          "severity": "high",
+          "message": "discount_rate 超出数值范围",
+          "issue_key": "de6e7ff3600bcbd4e81e377fec5a2f4eccf61be0"
+        }
+      ]
+    },
+    {
+      "check_id": "orders_payment_allowed",
+      "rule_type": "allowed_values",
+      "table": "orders",
+      "severity": "medium",
+      "passed": false,
+      "checked_rows": 6001,
+      "metric": 1,
+      "message": "枚举值检查",
+      "duration_ms": 0.0,
+      "issues": [
+        {
+          "check_id": "orders_payment_allowed",
+          "rule_type": "allowed_values",
+          "table": "orders",
+          "row_index": 5,
+          "column": "payment_status",
+          "value": "unknown",
+          "severity": "medium",
+          "message": "payment_status 取值不在允许范围内",
+          "issue_key": "5c59acd1fc110a9589c689982eaf198c3dc05a19"
+        }
+      ]
+    },
+    {
+      "check_id": "orders_date_not_future",
+      "rule_type": "date_not_after",
+      "table": "orders",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 6001,
+      "metric": 1,
+      "message": "日期有效性检查",
+      "duration_ms": 0.0,
+      "issues": [
+        {
+          "check_id": "orders_date_not_future",
+          "rule_type": "date_not_after",
+          "table": "orders",
+          "row_index": 6,
+          "column": "order_date",
+          "value": "2026-12-31",
+          "severity": "high",
+          "message": "order_date 不是有效历史日期或晚于 2026-01-15",
+          "issue_key": "e53ecd5f063a36e02ea68cc192c93e44cb0b0c44"
+        }
+      ]
+    },
+    {
+      "check_id": "orders_freshness",
+      "rule_type": "freshness",
+      "table": "orders",
+      "severity": "medium",
+      "passed": true,
+      "checked_rows": 6001,
+      "metric": 45,
+      "message": "数据新鲜度检查",
+      "duration_ms": 0.0,
+      "issues": []
+    },
+    {
+      "check_id": "orders_null_rate",
+      "rule_type": "null_rate",
+      "table": "orders",
+      "severity": "high",
+      "passed": false,
+      "checked_rows": 6001,
+      "metric": 4.1659723379436764e-05,
+      "message": "空值率检查",
+      "duration_ms": 12.78,
+      "issues": [
+        {
+          "check_id": "orders_null_rate",
+          "rule_type": "null_rate",
+          "table": "orders",
+          "row_index": null,
+          "column": "order_id",
+          "value": null,
+          "severity": "high",
+          "message": "order_id 空值率 0.02% 超过阈值 0.00%",
+          "issue_key": "5c6a176802c045282f472c0f7333b87b61510f02"
+        }
+      ]
+    },
+    {
+      "check_id": "orders_row_count",
+      "rule_type": "row_count",
+      "table": "orders",
+      "severity": "high",
+      "passed": true,
+      "checked_rows": 6001,
+      "metric": 6001,
+      "message": "记录数检查",
+      "duration_ms": 0.0,
+      "issues": []
+    }
+  ],
+  "issues": [
+    {
+      "check_id": "customers_pk_not_null",
+      "rule_type": "not_null",
+      "table": "customers",
+      "row_index": 5,
+      "column": "customer_id",
+      "value": "",
+      "severity": "high",
+      "message": "customer_id 不能为空",
+      "issue_key": "8d53deed4c75725a26cd5c30a12b9553c7ecb670"
+    },
+    {
+      "check_id": "customers_pk_unique",
+      "rule_type": "unique",
+      "table": "customers",
+      "row_index": 7,
+      "column": "customer_id",
+      "value": "C000006",
+      "severity": "high",
+      "message": "唯一键重复：customer_id",
+      "issue_key": "4bc2080c764c3f2d0716af5b89577e3bfa1f02f5"
+    },
+    {
+      "check_id": "customers_pk_unique",
+      "rule_type": "unique",
+      "table": "customers",
+      "row_index": 402,
+      "column": "customer_id",
+      "value": "C000006",
+      "severity": "high",
+      "message": "唯一键重复：customer_id",
+      "issue_key": "1bb3c5825c5ea151dd0b2c1741af12dd2aaa796e"
+    },
+    {
+      "check_id": "customers_email_format",
+      "rule_type": "regex",
+      "table": "customers",
+      "row_index": 2,
+      "column": "email",
+      "value": "bad-email",
+      "severity": "medium",
+      "message": "email 格式不符合规则",
+      "issue_key": "6323349f34ce2fb002618821dd665f03350e96d9"
+    },
+    {
+      "check_id": "customers_email_format",
+      "rule_type": "regex",
+      "table": "customers",
+      "row_index": 3,
+      "column": "email",
+      "value": "",
+      "severity": "medium",
+      "message": "email 格式不符合规则",
+      "issue_key": "ed7fede295a397a8c8139b9f091d10659d010b84"
+    },
+    {
+      "check_id": "customers_status_allowed",
+      "rule_type": "allowed_values",
+      "table": "customers",
+      "row_index": 4,
+      "column": "status",
+      "value": "unknown",
+      "severity": "medium",
+      "message": "status 取值不在允许范围内",
+      "issue_key": "fbe0fba208479670397b9cefc5e886a905abbed3"
+    },
+    {
+      "check_id": "customers_join_not_future",
+      "rule_type": "date_not_after",
+      "table": "customers",
+      "row_index": 6,
+      "column": "join_date",
+      "value": "2026-12-31",
+      "severity": "high",
+      "message": "join_date 不是有效历史日期或晚于 2026-01-15",
+      "issue_key": "186de565e592b1c4ab80553c243ddf30e86c23bb"
+    },
+    {
+      "check_id": "products_pk_unique",
+      "rule_type": "unique",
+      "table": "products",
+      "row_index": 5,
+      "column": "product_id",
+      "value": "P0004",
+      "severity": "high",
+      "message": "唯一键重复：product_id",
+      "issue_key": "93a06c97b394b01f09d2c6c11a63449602bb0893"
+    },
+    {
+      "check_id": "products_pk_unique",
+      "rule_type": "unique",
+      "table": "products",
+      "row_index": 102,
+      "column": "product_id",
+      "value": "P0004",
+      "severity": "high",
+      "message": "唯一键重复：product_id",
+      "issue_key": "bd623f9d2f16422a9697f1562a8b73fa7e1e52df"
+    },
+    {
+      "check_id": "products_category_not_null",
+      "rule_type": "not_null",
+      "table": "products",
+      "row_index": 3,
+      "column": "category",
+      "value": "",
+      "severity": "high",
+      "message": "category 不能为空",
+      "issue_key": "7802a8fa5058671fff64c40133445b93ed288200"
+    },
+    {
+      "check_id": "products_cost_range",
+      "rule_type": "range",
+      "table": "products",
+      "row_index": 2,
+      "column": "unit_cost",
+      "value": "-10.00",
+      "severity": "high",
+      "message": "unit_cost 超出数值范围",
+      "issue_key": "e37ef9abb2d89d4b6b698be100843d8afc42e643"
+    },
+    {
+      "check_id": "products_price_range",
+      "rule_type": "range",
+      "table": "products",
+      "row_index": 4,
+      "column": "list_price",
+      "value": "0.00",
+      "severity": "high",
+      "message": "list_price 超出数值范围",
+      "issue_key": "602d33b5a27f2566243d8a1aab54527ce50ed54f"
+    },
+    {
+      "check_id": "orders_pk_not_null",
+      "rule_type": "not_null",
+      "table": "orders",
+      "row_index": 11,
+      "column": "order_id",
+      "value": "",
+      "severity": "high",
+      "message": "order_id 不能为空",
+      "issue_key": "2387c382722a8c81c11b0982f30ab595a8dd57f6"
+    },
+    {
+      "check_id": "orders_pk_unique",
+      "rule_type": "unique",
+      "table": "orders",
+      "row_index": 10,
+      "column": "order_id",
+      "value": "O00000009",
+      "severity": "high",
+      "message": "唯一键重复：order_id",
+      "issue_key": "01d2cf94a62fd47c562132cdddaf4060c416020f"
+    },
+    {
+      "check_id": "orders_pk_unique",
+      "rule_type": "unique",
+      "table": "orders",
+      "row_index": 6002,
+      "column": "order_id",
+      "value": "O00000009",
+      "severity": "high",
+      "message": "唯一键重复：order_id",
+      "issue_key": "9d39b84c386b1557b5836fdabf27ef79e00adeda"
+    },
+    {
+      "check_id": "orders_customer_fk",
+      "rule_type": "referential_integrity",
+      "table": "orders",
+      "row_index": 7,
+      "column": "customer_id",
+      "value": "C999999",
+      "severity": "high",
+      "message": "customer_id 在父表中不存在",
+      "issue_key": "e4ebf9b3691088a1419f58b10593e19ba30cb4bc"
+    },
+    {
+      "check_id": "orders_customer_fk",
+      "rule_type": "referential_integrity",
+      "table": "orders",
+      "row_index": 448,
+      "column": "customer_id",
+      "value": "C000004",
+      "severity": "high",
+      "message": "customer_id 在父表中不存在",
+      "issue_key": "052a4020f2cc5dfa00171e8f681a4a272e689a11"
+    },
+    {
+      "check_id": "orders_customer_fk",
+      "rule_type": "referential_integrity",
+      "table": "orders",
+      "row_index": 1403,
+      "column": "customer_id",
+      "value": "C000004",
+      "severity": "high",
+      "message": "customer_id 在父表中不存在",
+      "issue_key": "e789fbd2010eaf6ffa51de0399cff869d5101669"
+    },
+    {
+      "check_id": "orders_customer_fk",
+      "rule_type": "referential_integrity",
+      "table": "orders",
+      "row_index": 2332,
+      "column": "customer_id",
+      "value": "C000004",
+      "severity": "high",
+      "message": "customer_id 在父表中不存在",
+      "issue_key": "08937e0b0b3deac2fa9585fb25012f24e5504dc8"
+    },
+    {
+      "check_id": "orders_customer_fk",
+      "rule_type": "referential_integrity",
+      "table": "orders",
+      "row_index": 2370,
+      "column": "customer_id",
+      "value": "C000004",
+      "severity": "high",
+      "message": "customer_id 在父表中不存在",
+      "issue_key": "b33f054c723298e41a7518b52d5a7e30a559beb3"
+    },
+    {
+      "check_id": "orders_customer_fk",
+      "rule_type": "referential_integrity",
+      "table": "orders",
+      "row_index": 3002,
+      "column": "customer_id",
+      "value": "C000004",
+      "severity": "high",
+      "message": "customer_id 在父表中不存在",
+      "issue_key": "37354d958aa2598095485215055b71babf8a5e3d"
+    },
+    {
+      "check_id": "orders_customer_fk",
+      "rule_type": "referential_integrity",
+      "table": "orders",
+      "row_index": 3370,
+      "column": "customer_id",
+      "value": "C000004",
+      "severity": "high",
+      "message": "customer_id 在父表中不存在",
+      "issue_key": "dfd6643a396b78c0cbbc185882366f33606fef3b"
+    },
+    {
+      "check_id": "orders_customer_fk",
+      "rule_type": "referential_integrity",
+      "table": "orders",
+      "row_index": 3392,
+      "column": "customer_id",
+      "value": "C000004",
+      "severity": "high",
+      "message": "customer_id 在父表中不存在",
+      "issue_key": "2adafc620b3f4011f83e2fab1e8812a0ff621742"
+    },
+    {
+      "check_id": "orders_customer_fk",
+      "rule_type": "referential_integrity",
+      "table": "orders",
+      "row_index": 3892,
+      "column": "customer_id",
+      "value": "C000004",
+      "severity": "high",
+      "message": "customer_id 在父表中不存在",
+      "issue_key": "d4b81010d2fe967b1f6a81aaafac52a8f26d7f94"
+    },
+    {
+      "check_id": "orders_customer_fk",
+      "rule_type": "referential_integrity",
+      "table": "orders",
+      "row_index": 4258,
+      "column": "customer_id",
+      "value": "C000004",
+      "severity": "high",
+      "message": "customer_id 在父表中不存在",
+      "issue_key": "546bb4bb97fcb5de81d3ac1fc046b0efbfde0ac5"
+    },
+    {
+      "check_id": "orders_customer_fk",
+      "rule_type": "referential_integrity",
+      "table": "orders",
+      "row_index": 5164,
+      "column": "customer_id",
+      "value": "C000004",
+      "severity": "high",
+      "message": "customer_id 在父表中不存在",
+      "issue_key": "e10fd021af16138706ca1ba3f8d70e3cf2a4f143"
+    },
+    {
+      "check_id": "orders_customer_fk",
+      "rule_type": "referential_integrity",
+      "table": "orders",
+      "row_index": 5416,
+      "column": "customer_id",
+      "value": "C000004",
+      "severity": "high",
+      "message": "customer_id 在父表中不存在",
+      "issue_key": "13d9d62f83dd4c3155846afd8e05470ff771e392"
+    },
+    {
+      "check_id": "orders_product_fk",
+      "rule_type": "referential_integrity",
+      "table": "orders",
+      "row_index": 8,
+      "column": "product_id",
+      "value": "P9999",
+      "severity": "high",
+      "message": "product_id 在父表中不存在",
+      "issue_key": "4215827959326305abb66733c06f4d9639986b85"
+    },
+    {
+      "check_id": "orders_region_consistency",
+      "rule_type": "cross_table_consistency",
+      "table": "orders",
+      "row_index": 9,
+      "column": "region",
+      "value": "海外",
+      "severity": "high",
+      "message": "字段值与父表不一致",
+      "issue_key": "20bb16894fbd558fec1ff3f43e8007bd44896868"
+    },
+    {
+      "check_id": "orders_quantity_range",
+      "rule_type": "range",
+      "table": "orders",
+      "row_index": 2,
+      "column": "quantity",
+      "value": "-2",
+      "severity": "high",
+      "message": "quantity 超出数值范围",
+      "issue_key": "347e35fea66b599f2fb8c5175e1c4776c11d79d1"
+    },
+    {
+      "check_id": "orders_price_range",
+      "rule_type": "range",
+      "table": "orders",
+      "row_index": 3,
+      "column": "unit_price",
+      "value": "-99.00",
+      "severity": "high",
+      "message": "unit_price 超出数值范围",
+      "issue_key": "a833aae376536c8e01c4615db864aac439ede02e"
+    },
+    {
+      "check_id": "orders_discount_range",
+      "rule_type": "range",
+      "table": "orders",
+      "row_index": 4,
+      "column": "discount_rate",
+      "value": "0.80",
+      "severity": "high",
+      "message": "discount_rate 超出数值范围",
+      "issue_key": "de6e7ff3600bcbd4e81e377fec5a2f4eccf61be0"
+    },
+    {
+      "check_id": "orders_payment_allowed",
+      "rule_type": "allowed_values",
+      "table": "orders",
+      "row_index": 5,
+      "column": "payment_status",
+      "value": "unknown",
+      "severity": "medium",
+      "message": "payment_status 取值不在允许范围内",
+      "issue_key": "5c59acd1fc110a9589c689982eaf198c3dc05a19"
+    },
+    {
+      "check_id": "orders_date_not_future",
+      "rule_type": "date_not_after",
+      "table": "orders",
+      "row_index": 6,
+      "column": "order_date",
+      "value": "2026-12-31",
+      "severity": "high",
+      "message": "order_date 不是有效历史日期或晚于 2026-01-15",
+      "issue_key": "e53ecd5f063a36e02ea68cc192c93e44cb0b0c44"
+    },
+    {
+      "check_id": "orders_null_rate",
+      "rule_type": "null_rate",
+      "table": "orders",
+      "row_index": null,
+      "column": "order_id",
+      "value": null,
+      "severity": "high",
+      "message": "order_id 空值率 0.02% 超过阈值 0.00%",
+      "issue_key": "5c6a176802c045282f472c0f7333b87b61510f02"
+    }
+  ],
+  "sources": {
+    "customers": {
+      "rows": 401,
+      "columns": [
+        "customer_id",
+        "name",
+        "email",
+        "region",
+        "segment",
+        "join_date",
+        "status"
+      ]
+    },
+    "products": {
+      "rows": 101,
+      "columns": [
+        "product_id",
+        "product_name",
+        "category",
+        "unit_cost",
+        "list_price",
+        "status"
+      ]
+    },
+    "orders": {
+      "rows": 6001,
+      "columns": [
+        "order_id",
+        "order_date",
+        "customer_id",
+        "product_id",
+        "quantity",
+        "unit_price",
+        "discount_rate",
+        "payment_status",
+        "region"
+      ]
+    }
+  }
+}
