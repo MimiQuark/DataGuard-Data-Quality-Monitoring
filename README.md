@@ -1,4 +1,4 @@
-# Data Quality Monitor
+# DataGuard: Data Quality Monitoring and Closed-Loop Governance
 
 Configurable Python, Pandas, SQLite and HTML data-quality monitoring tool.
 
