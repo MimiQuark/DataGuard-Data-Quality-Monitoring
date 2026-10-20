@@ -15,11 +15,21 @@ class Issue:
     value: str | None
     severity: str
     message: str
+    row_key: str | None = None
     issue_key: str = ""
 
     def __post_init__(self):
         if not self.issue_key:
-            raw = "|".join([self.check_id, self.table, str(self.row_index or ""), self.column or "", self.message])
+            identity = (
+                f"key:{self.row_key}"
+                if self.row_key not in (None, "")
+                else f"row:{self.row_index}"
+                if self.row_index is not None
+                else "aggregate"
+            )
+            raw = "|".join(
+                [self.check_id, self.table, identity, self.column or "", self.rule_type]
+            )
             self.issue_key = sha1(raw.encode("utf-8")).hexdigest()
 
     def to_dict(self):
@@ -38,6 +48,7 @@ class CheckResult:
     message: str
     duration_ms: float
     issues: list[Issue] = field(default_factory=list)
+    error: str | None = None
 
     def to_dict(self):
         data = asdict(self)

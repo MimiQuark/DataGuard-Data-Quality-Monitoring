@@ -5,7 +5,7 @@ import random
 from datetime import date, timedelta
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parents[1]
+BASE_DIR = Path(__file__).resolve().parents[2]
 RAW_DIR = BASE_DIR / "data" / "raw"
 REGIONS = ["华东", "华南", "华北", "华中", "西南", "西北", "东北"]
 SEGMENTS = ["个人客户", "企业客户", "会员客户"]
@@ -24,7 +24,8 @@ def write_csv(path: Path, rows, headers=None):
     return len(rows)
 
 
-def main(seed: int = 20261008):
+def main(seed: int = 20261008, output_dir: str | Path | None = None):
+    raw_dir = Path(output_dir) if output_dir else RAW_DIR
     rng = random.Random(seed)
     start = date(2024, 1, 1)
     customers = []
@@ -92,9 +93,9 @@ def main(seed: int = 20261008):
     orders.append(dict(orders[8]))  # Duplicate order key.
     orders[9]["order_id"] = ""
 
-    write_csv(RAW_DIR / "customers.csv", customers)
-    write_csv(RAW_DIR / "products.csv", products)
-    write_csv(RAW_DIR / "orders.csv", orders)
+    write_csv(raw_dir / "customers.csv", customers)
+    write_csv(raw_dir / "products.csv", products)
+    write_csv(raw_dir / "orders.csv", orders)
     print({"customers": len(customers), "products": len(products), "orders": len(orders)})
 
 

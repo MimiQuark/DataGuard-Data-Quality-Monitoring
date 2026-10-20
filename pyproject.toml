@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dataguard"
+version = "1.1.0"
+description = "Configurable CSV/MySQL data-quality monitoring with SQLite issue lifecycle and HTML/CSV/JSON reporting"
+requires-python = ">=3.11"
+dependencies = ["pandas>=2.2"]
+
+[project.optional-dependencies]
+mysql = ["PyMySQL>=1.1"]
+dev = ["pytest>=8,<10"]
+
+[project.scripts]
+dataguard = "dataguard.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

@@ -28,7 +28,8 @@ def build_trend_svg(history):
         x = 40 + index * ((width - 80) / max(1, len(history) - 1))
         y = height - 30 - (int(row.get("issue_count", 0)) / max_issues * (height - 60))
         points.append(f"{x:.1f},{y:.1f}")
-        labels.append(f"<text x='{x:.1f}' y='{height - 8}' text-anchor='middle' font-size='10' fill='#64748b'>{esc(row['finished_at'][5:10])}</text>")
+        label = row["finished_at"][5:16].replace("T", " ")
+        labels.append(f"<text x='{x:.1f}' y='{height - 8}' text-anchor='middle' font-size='10' fill='#64748b'>{esc(label)}</text>")
     return (
         f"<svg viewBox='0 0 {width} {height}' role='img' aria-label='问题数量趋势'>"
         f"<line x1='40' y1='{height-30}' x2='{width-40}' y2='{height-30}' stroke='#cbd5e1'/>"
@@ -44,12 +45,19 @@ def build_report(context, history, output_dir: str | Path):
     issues = context["issues"]
     checks = context["checks"]
 
+    def csv_safe(value):
+        text = "" if value is None else str(value)
+        return "'" + text if text[:1] in ("=", "+", "-", "@", "\t", "\r") else text
+
     issues_path = output_dir / "issues.csv"
     with issues_path.open("w", newline="", encoding="utf-8-sig") as handle:
         fields = ["issue_key", "check_id", "rule_type", "table", "row_index", "column", "value", "severity", "message"]
         writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore")
         writer.writeheader()
-        writer.writerows(issues)
+        writer.writerows(
+            {field: csv_safe(issue.get(field)) for field in fields}
+            for issue in issues
+        )
 
     summary_path = output_dir / "run_summary.json"
     summary_path.write_text(json.dumps(context, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -62,7 +70,7 @@ def build_report(context, history, output_dir: str | Path):
         "<tr>"
         f"<td>{esc(check['check_id'])}</td><td>{esc(check['rule_type'])}</td><td>{esc(check['table'])}</td>"
         f"<td>{severity_badge(check['severity'])}</td><td>{'通过' if check['passed'] else '失败'}</td>"
-        f"<td>{esc(check['metric'])}</td><td>{esc(check['message'])}</td>"
+        f"<td>{esc(check['metric'])}</td><td>{esc(check['error'] or check['message'])}</td>"
         "</tr>"
         for check in checks
     )

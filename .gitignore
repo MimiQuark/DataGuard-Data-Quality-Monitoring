@@ -1,6 +1,24 @@
+# Python
 __pycache__/
-*.pyc
-.deps/
-node_modules/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 .venv/
+venv/
+
+# Generated data and reports
+data/
+output/
+*.sqlite
+*.db
+*.log
 *.inspect.ndjson
+
+# Local credentials / IDE
+.env
+config/mysql.local.json
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
