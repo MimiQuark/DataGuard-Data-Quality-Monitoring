@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import sqlite3
 from contextlib import contextmanager
+from hashlib import sha1
 from pathlib import Path
 
 SEVERITY_ORDER = "CASE severity WHEN 'high' THEN 0 WHEN 'medium' THEN 1 WHEN 'low' THEN 2 ELSE 3 END"
@@ -67,13 +68,10 @@ class RunStorage:
             )
             connection.execute("PRAGMA user_version = 2")
 
-    def save_run(self, summary, issues, executed_check_ids=None):
+    def save_run(self, summary, issues, executed_check_ids):
         data = summary.to_dict()
         now = summary.finished_at.isoformat(timespec="seconds")
-        if executed_check_ids is None:
-            executed = sorted({issue.check_id for issue in issues})
-        else:
-            executed = sorted(set(executed_check_ids))
+        executed = sorted(set(executed_check_ids))
         with self.connection() as connection:
             connection.execute(
                 "INSERT INTO run_history VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -93,8 +91,13 @@ class RunStorage:
                     data["duration_seconds"],
                 ),
             )
+            registry_keys = []
             for issue in issues:
                 item = issue.to_dict()
+                registry_key = sha1(
+                    f"{data['project_name']}|{item['issue_key']}".encode("utf-8")
+                ).hexdigest()
+                registry_keys.append(registry_key)
                 connection.execute(
                     """INSERT INTO issue_history
                     (run_id, issue_key, check_id, rule_type, table_name, row_index, column_name, value, severity, message)
@@ -123,7 +126,7 @@ class RunStorage:
                         severity=excluded.severity, message=excluded.message,
                         row_index=excluded.row_index, column_name=excluded.column_name""",
                     (
-                        item["issue_key"],
+                        registry_key,
                         data["project_name"],
                         now,
                         now,
@@ -137,7 +140,7 @@ class RunStorage:
                         item["message"],
                     ),
                 )
-            keys = [issue.issue_key for issue in issues]
+            keys = registry_keys
             if executed:
                 placeholders = ",".join("?" for _ in executed)
                 params = [now, data["project_name"], *executed]

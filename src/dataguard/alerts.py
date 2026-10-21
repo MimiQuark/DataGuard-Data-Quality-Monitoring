@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from urllib import error, request
+from urllib import request
 
 
 def build_alert(summary):
@@ -29,5 +29,5 @@ def emit_webhook(url: str, payload: dict, timeout: int = 10) -> dict:
     try:
         with request.urlopen(request_obj, timeout=timeout) as response:
             return {"ok": True, "status": response.status}
-    except (error.URLError, TimeoutError, OSError, ValueError) as exc:
+    except Exception as exc:  # malformed URLs can raise http.client.HTTPException
         return {"ok": False, "error": f"{type(exc).__name__}: {exc}"}

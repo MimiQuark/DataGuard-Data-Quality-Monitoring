@@ -28,6 +28,7 @@
 - 存在 `high` 问题且 `thresholds.fail_on_high = true`（默认）→ `failed`。
 - `fail_on_high = false` 时，`high` 问题只产生 `warning`。
 - 存在任何问题（包括 `low`）→ 至少为 `warning`，不会在检查失败时误报 `passed`。
+- 任意检查执行失败（即使没有 issue）→ `failed`，不会误报 `passed`。
 - 没有任何问题 → `passed`。
 
 `severity` 只能是 `high` / `medium` / `low`，拼写错误会在配置校验阶段直接报错。

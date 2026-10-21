@@ -126,7 +126,9 @@ def unique(context, check):
             "+".join(columns),
             " | ".join(str(frame.at[index, col]) for col in columns),
             f"唯一键重复：{'+'.join(columns)}",
-            row_key=_row_key(frame, check, index),
+            # Duplicate primary-key rows share the same PK value; keep the
+            # positional component so they still get distinct registry keys.
+            row_key=f"{_row_key(frame, check, index) or 'row'}:{index}",
         )
         for index in frame.index[duplicated]
     ]
@@ -286,7 +288,8 @@ def cross_table_consistency(context, check):
     frame = context[check["table"]]
     parent = context[check["parent_table"]]
     parent_key = check["parent_key_column"]
-    duplicate_parents = parent[parent.duplicated(subset=[parent_key], keep=False)]
+    parent_keys = parent[parent_key].astype(str).str.strip()
+    duplicate_parents = parent[parent_keys.duplicated(keep=False)]
     if not duplicate_parents.empty:
         issue = make_issue(
             check,
@@ -296,11 +299,17 @@ def cross_table_consistency(context, check):
         )
         return result(check, [issue], len(frame), None, "跨表一致性检查", started)
 
-    mapping = parent.set_index(parent_key)[check["parent_value_column"]]
-    expected = frame[check["key_column"]].map(mapping)
-    missing_parent = expected.isna() & frame[check["key_column"]].astype(str).str.strip().ne("")
+    mapping = (
+        parent.assign(_key=parent_keys)
+        .drop_duplicates("_key")
+        .set_index("_key")[check["parent_value_column"]]
+    )
+    child_keys = frame[check["key_column"]].astype(str).str.strip()
+    expected = child_keys.map(mapping)
+    missing_parent = expected.isna() & child_keys.ne("")
     mismatched = expected.notna() & (
-        frame[check["value_column"]].astype(str) != expected.astype(str)
+        frame[check["value_column"]].astype(str).str.strip()
+        != expected.astype(str).str.strip()
     )
     issues = [
         make_issue(

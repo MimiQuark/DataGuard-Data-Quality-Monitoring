@@ -57,8 +57,16 @@ def validate_config(config: dict) -> None:
             raise ConfigError(f"数据源 {name} 的 type 不支持: {source_type}")
         if source_type == "csv" and not source.get("path"):
             raise ConfigError(f"数据源 {name} 缺少 path")
-        if source_type == "mysql" and not source.get("query"):
-            raise ConfigError(f"数据源 {name} 缺少 query")
+        if source_type == "mysql":
+            if not source.get("query"):
+                raise ConfigError(f"数据源 {name} 缺少 query")
+            for field in ("host", "user", "database"):
+                if not source.get(field):
+                    raise ConfigError(f"MySQL 数据源 {name} 缺少 {field}")
+            try:
+                int(source.get("port", 3306))
+            except (TypeError, ValueError) as exc:
+                raise ConfigError(f"MySQL 数据源 {name} 的 port 不是整数") from exc
 
     seen_ids = set()
     known_rules = set(registered_rules())
@@ -66,8 +74,8 @@ def validate_config(config: dict) -> None:
         if not isinstance(check, dict):
             raise ConfigError(f"第 {index + 1} 个 check 必须是对象")
         check_id = check.get("id")
-        if not check_id:
-            raise ConfigError(f"第 {index + 1} 个 check 缺少 id")
+        if not isinstance(check_id, str) or not check_id:
+            raise ConfigError(f"第 {index + 1} 个 check 缺少有效 id")
         if check_id in seen_ids:
             raise ConfigError(f"check id 重复: {check_id}")
         seen_ids.add(check_id)
@@ -75,7 +83,7 @@ def validate_config(config: dict) -> None:
         if rule_type not in known_rules:
             raise ConfigError(f"check {check_id} 使用未知规则类型: {rule_type}")
         table = check.get("table")
-        if table not in sources:
+        if not isinstance(table, str) or table not in sources:
             raise ConfigError(f"check {check_id} 引用了未知数据源: {table}")
         severity = check.get("severity", "medium")
         if severity not in VALID_SEVERITIES:
@@ -85,6 +93,26 @@ def validate_config(config: dict) -> None:
         for field in REQUIRED_FIELDS[rule_type]:
             if field not in check:
                 raise ConfigError(f"check {check_id} 缺少字段: {field}")
+        for field in ("column",):
+            if field in check and (not isinstance(check[field], str) or not check[field]):
+                raise ConfigError(f"check {check_id} 的 {field} 必须是非空字符串")
+        for field in ("columns",):
+            if field in check and (
+                not isinstance(check[field], list)
+                or not check[field]
+                or not all(isinstance(item, str) and item for item in check[field])
+            ):
+                raise ConfigError(f"check {check_id} 的 {field} 必须是非空字符串数组")
+        if "values" in check and (
+            not isinstance(check["values"], list) or not check["values"]
+        ):
+            raise ConfigError(f"check {check_id} 的 values 必须是非空数组")
+        for field in ("max_rate", "min", "max", "max_age_days"):
+            if field in check:
+                try:
+                    float(check[field])
+                except (TypeError, ValueError) as exc:
+                    raise ConfigError(f"check {check_id} 的 {field} 不是数字") from exc
         if rule_type == "regex":
             try:
                 re.compile(check["pattern"])
@@ -190,10 +218,11 @@ class DataQualityEngine:
         for issue in issues:
             severity_counts[issue.severity] = severity_counts.get(issue.severity, 0) + 1
         failed_checks = sum(1 for check in self.checks if not check.passed)
+        error_count = sum(1 for check in self.checks if check.error)
         fail_on_high = bool(self.config.get("thresholds", {}).get("fail_on_high", True))
-        if severity_counts["high"] and fail_on_high:
+        if (severity_counts["high"] and fail_on_high) or error_count:
             status = "failed"
-        elif issues:
+        elif issues or failed_checks:
             status = "warning"
         else:
             status = "passed"

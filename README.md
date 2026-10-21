@@ -9,7 +9,7 @@
 
 DataGuard 是一套可配置的数据质量监控工具：读取 CSV 或 MySQL 数据源，按 JSON 规则执行检查，输出 HTML / CSV / JSON 报告，并用 SQLite 记录运行历史、问题首次出现时间和闭环状态。
 
-> 12 类规则 / 28 项检查 · HTML / CSV / JSON 报告 · SQLite 问题闭环 · 14 项自动化测试
+> 12 类规则 / 28 项检查 · HTML / CSV / JSON 报告 · SQLite 问题闭环 · 17 项自动化测试
 
 ## 项目定位
 
@@ -135,7 +135,7 @@ python -m pip install -e ".[mysql]"
 python -m pytest -q
 ```
 
-14 项测试覆盖：基线 28 项检查、35 条 issue、缺列不崩溃、配置校验、状态策略、唯一键指标、regex 全匹配、空外键、issue key 稳定、部分配置不误关、二次运行 resolved、severity 排序、CSV 公式注入、趋势标签和 CLI 退出码。
+17 项测试覆盖：基线 28 项检查、35 条 issue、缺列不崩溃、配置校验、状态策略、唯一键指标、regex 全匹配、空外键、issue key 稳定、部分配置不误关、二次运行 resolved、severity 排序、CSV 公式注入、趋势标签和 CLI 退出码。
 
 CI 在 Python 3.11 上安装项目、生成临时 fixture、运行 pytest 和 `python -m dataguard --help`。
 

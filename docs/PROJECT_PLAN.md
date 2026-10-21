@@ -9,7 +9,7 @@
 - [x] SQLite 运行历史、稳定 issue key 与按执行范围闭环。
 - [x] HTML / CSV / JSON 输出，CSV 防公式注入。
 - [x] 可选 Webhook 告警，失败不阻断报告。
-- [x] 14 项自动化测试（pytest）。
+- [x] 17 项自动化测试（pytest）。
 - [x] GitHub Actions CI。
 
 ## 验收标准

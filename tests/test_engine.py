@@ -33,6 +33,7 @@ def test_missing_column_does_not_abort_run(tmp_path: Path):
     email_check = next(check for check in checks if check.check_id == "customers_email_format")
     assert email_check.passed is False
     assert email_check.error
+    assert summary.status == "failed"
 
 
 def test_invalid_severity_rejected(tmp_path: Path):
@@ -97,3 +98,29 @@ def test_issue_key_is_stable_across_messages():
     a = Issue("c1", "null_rate", "t", None, "x", None, "high", "rate 1%")
     b = Issue("c1", "null_rate", "t", None, "x", None, "high", "rate 2%")
     assert a.issue_key == b.issue_key
+
+
+def test_errored_check_never_passes(tmp_path: Path):
+    data = tmp_path / "t.csv"
+    pd.DataFrame({"id": ["a"]}).to_csv(data, index=False)
+    config = {
+        "project_name": "DataGuard",
+        "base_dir": str(tmp_path),
+        "sources": {"t": {"type": "csv", "path": "t.csv", "primary_key": "id"}},
+        "checks": [
+            {"id": "missing_column", "type": "not_null", "table": "t", "column": "absent", "severity": "low"}
+        ],
+        "thresholds": {"fail_on_high": True},
+    }
+    config_path = tmp_path / "rules.json"
+    config_path.write_text(json.dumps(config, ensure_ascii=False), encoding="utf-8")
+    summary, checks, _ = run_from_config(config_path)
+    assert checks[0].error
+    assert summary.status == "failed"
+
+
+def test_duplicate_pk_issues_have_distinct_keys(tmp_path: Path):
+    _, checks, _ = run_from_config(make_project(tmp_path))
+    check = next(c for c in checks if c.check_id == "customers_pk_unique")
+    assert len(check.issues) == 2
+    assert len({issue.issue_key for issue in check.issues}) == 2

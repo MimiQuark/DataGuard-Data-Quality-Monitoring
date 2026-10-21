@@ -75,6 +75,15 @@ def test_partial_config_does_not_close_other_checks(tmp_path: Path):
     assert len(storage.open_issues(summary.project_name)) >= customer_open
 
 
+def test_projects_are_isolated_in_registry(tmp_path: Path):
+    storage = RunStorage(tmp_path / "dq.sqlite")
+    issue = Issue("c1", "not_null", "t", 2, "x", None, "high", "issue", row_key="a")
+    storage.save_run(_summary(project="A"), [issue], executed_check_ids=["c1"])
+    storage.save_run(_summary(project="B"), [issue], executed_check_ids=["c1"])
+    assert len(storage.open_issues("A")) == 1
+    assert len(storage.open_issues("B")) == 1
+
+
 def test_second_run_resolves_fixed_issue(tmp_path: Path):
     data = tmp_path / "t.csv"
     config = {

@@ -30,7 +30,7 @@ def main() -> int:
     args = parse_args()
     try:
         summary, checks, context = run_from_config(args.config)
-    except (ConfigError, FileNotFoundError, ValueError) as exc:
+    except (ConfigError, FileNotFoundError, ValueError, RuntimeError, KeyError) as exc:
         print(json.dumps({"error": f"{type(exc).__name__}: {exc}"}, ensure_ascii=False, indent=2))
         return 2
 
@@ -39,7 +39,7 @@ def main() -> int:
     storage.save_run(
         summary,
         issues,
-        executed_check_ids=[check.check_id for check in checks],
+        executed_check_ids=[check.check_id for check in checks if check.error is None],
     )
     history = storage.history(30)
     outputs = build_report(context, history, args.output_dir)
